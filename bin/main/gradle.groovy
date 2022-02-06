@@ -107,7 +107,10 @@ def gitCreateRelease(){
 }
 
 def gitMergeMaster(){
-	sh "git fetch origin main && git checkout main && git merge --no-ff release-${env.NEXT_TAG} && git push"
+	sh 'git remote add git@github.com:usach-devops-seccion1-grupo6/ms-iclab.git'
+	sh 'git fetch origin main'
+	sh 'git checkout main'
+	sh "git merge --no-ff release-${env.NEXT_TAG} && git push"
 }
 
 def gitMergeDevelop(){
