@@ -39,7 +39,7 @@ def upTagVersion(String tag){
 }
 
 def clone(folderTmp){
-	sh "mkdir ${folderTmp} 2& > /dev/null"
+	sh "rm -rf ${folderTmp} && mkdir ${folderTmp} 2& > /dev/null"
 	sh "git clone git@github.com:usach-devops-seccion1-grupo6/ms-iclab.git ${folderTmp} & > /dev/null"
 }
 
