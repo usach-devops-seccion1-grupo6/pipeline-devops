@@ -4,7 +4,7 @@ def call(String chosenStages){
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-	def pipelineStages = (pipelineType == 'IC') ? ['buildAndTest','sonar','runJar','rest','nexusCI'] : ['downloadNexus','runDownloadedJar','rest','nexusCD']
+	def pipelineStages = (pipelineType == 'IC') ? ['buildAndTest','sonar','runJar','rest','nexusCI','gitCreateRelease'] : ['downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
@@ -91,6 +91,27 @@ def nexusCD(){
 			]
 		]
 	]
+}
+
+def gitCreateRelease(){
+	sh '
+		git fetch -p 
+		git checkout develop; git pull
+		git checkout -b release-v1.0.0
+		git push origin release-v1.0.0
+	'
+}
+
+def gitMergeMaster(){
+	sh 'git switch main && git merge --no-ff release-v1.0.0'
+}
+
+def gitMergeDevelop(){
+	sh 'git switch develop && git merge --no-ff release-v1.0.0'
+}
+
+def gitTagMaster(){
+	sh 'git switch main && git tag -a v1.0.0'
 }
 
 return this;
