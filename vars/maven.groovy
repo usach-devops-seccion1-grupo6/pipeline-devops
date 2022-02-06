@@ -37,7 +37,8 @@ def jar(){
 
 def sonar(){
     withSonarQubeEnv(installationName: 'sonarqube') {
-        sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=github-sonar'
+		def sonar_id = "${env.JOB_MULTI}-${env.RAMA}-${env.BUILD_ID}"
+        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${sonar_id} -Dsonar.projectName=${sonar_id}"
     }
 }
 

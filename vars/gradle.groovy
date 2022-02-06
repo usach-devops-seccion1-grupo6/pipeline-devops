@@ -37,7 +37,8 @@ def jar(){
 
 def sonar(){
 	withSonarQubeEnv('sonarqube') {
-		sh 'gradle sonarqube -Dsonar.projectKey=ejemplo-gradle -Dsonar.java.binaries=build'
+		def sonar_id = "${env.JOB_MULTI}-${env.RAMA}-${env.BUILD_ID}"
+		sh "gradle sonarqube -Dsonar.projectKey=${sonar_id} -Dsonar.projectName=${sonar_id} -Dsonar.java.binaries=build"
 	}
 }
 
