@@ -17,7 +17,7 @@ def call(String chosenStages){
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
-	env.TMP_FOLDER = "/tmp/${env.BRANCH_NAME}"
+	env.TMP_FOLDER = "/tmp/${env.RAMA}"
 	utils.clone("${env.TMP_FOLDER}")
 	stages.each{
 		stage(it){
@@ -33,7 +33,7 @@ def call(String chosenStages){
 	}
 }
 
-def buildAndTest(){
+def compile(){
 	sh "gradle clean build"
 	sh "mv build/libs/DevOpsUsach2020-0.0.1.jar build/libs/DevOpsUsach2020-${env.NEXT_TAG}.jar"
 }
@@ -44,6 +44,12 @@ def unitTest(){
 
 def jar(){
 	sh 'gradle jar'
+}
+
+def md5Jar(){
+	def md5Old = sh(script: "md5sum build/DevOpsUsach2020-0.0.1.jar |awk '{print \$1}'", returnStdout: true).trim()
+	def md5New = sh(script: "md5sum DevOpsUsach2020-0.0.1-${env.GIT_BRANCH}.jar |awk '{print \$1}'", returnStdout: true).trim()
+    //sh "test \"${md5Old}\" = \"${md5New}\""
 }
 
 def sonar(){
@@ -83,7 +89,7 @@ def nexusUpload(){
 	]
 }
 
-def downloadNexus(){
+def nexusDownload(){
 	sh "curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD 'http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/${env.NEXT_TAG}-${env.GIT_BRANCH}/DevOpsUsach2020-${env.NEXT_TAG}-${env.GIT_BRANCH}.jar' -O"
 }
 
@@ -93,10 +99,9 @@ def runDownloadedJar(){
 }
 
 def gitCreateRelease(){
-	when {
-		branch "develop"
+	if("${env.BRANCH_NAME}" == "develop"){
+		sh "git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}"
 	}
-	sh "git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}"
 }
 
 def gitMergeMaster(){

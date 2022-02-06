@@ -99,10 +99,9 @@ def runDownloadedJar(){
 }
 
 def gitCreateRelease(){
-	when {
-		branch "develop"
+	if("${env.BRANCH_NAME}" == "develop"){
+		sh "git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}"
 	}
-	sh "git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}"
 }
 
 def gitMergeMaster(){
