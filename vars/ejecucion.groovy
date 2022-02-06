@@ -1,6 +1,5 @@
 def call(){
-    def tag = sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
-    sh "$tag"
+
     pipeline {
         agent any
 

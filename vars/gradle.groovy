@@ -1,6 +1,8 @@
 import pipeline.*
 
 def call(String chosenStages){
+	def tags = sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
+	echo "$tags"
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
