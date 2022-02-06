@@ -17,7 +17,7 @@ def call(String chosenStages){
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
-	env.TMP_FOLDER = "/tmp/${env.BRANCH_NAME}"
+	env.TMP_FOLDER = "/tmp/${env.RAMA}"
 	utils.clone("${env.TMP_FOLDER}")
 	stages.each{
 		stage(it){
@@ -83,7 +83,7 @@ def nexusUpload(){
 	]
 }
 
-def downloadNexus(){
+def nexusDownload(){
 	sh "curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD 'http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/${env.NEXT_TAG}-${env.GIT_BRANCH}/DevOpsUsach2020-${env.NEXT_TAG}-${env.GIT_BRANCH}.jar' -O"
 }
 
