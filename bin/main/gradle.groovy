@@ -31,6 +31,7 @@ def call(String chosenStages){
 }
 
 def buildAndTest(){
+	echo "${env.CURR_TAG}"
 	sh 'gradle clean build'
 }
 
@@ -57,7 +58,7 @@ def nexusCI(){
 			mavenAssetList: [
 				[classifier: '',
 				extension: 'jar',
-				filePath: 'build/libs/DevOpsUsach2020-${env.NEXT_TAG}.jar'
+				filePath: 'build/libs/DevOpsUsach2020-"${env.CURR_TAG}".jar'
 			]
 		],
 			mavenCoordinate: [
