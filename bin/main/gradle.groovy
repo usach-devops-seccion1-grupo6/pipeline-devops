@@ -107,15 +107,17 @@ def gitCreateRelease(){
 }
 
 def gitMergeMaster(){
-	sh "git fetch origin main && git checkout -f main && git merge --no-ff release-${env.NEXT_TAG} && git push"
+	sh 'git remote remove origin'
+	sh 'git remote add origin git@github.com:usach-devops-seccion1-grupo6/ms-iclab.git'
+	sh "git fetch origin main && git checkout main && git merge --no-ff release-${env.NEXT_TAG} && git push"
 }
 
 def gitMergeDevelop(){
-	sh "git fetch origin develop && git checkout -f develop && git merge --no-ff release-${env.NEXT_TAG} && git push"
+	sh "git fetch origin develop && git checkout develop && git merge --no-ff release-${env.NEXT_TAG} && git push"
 }
 
 def gitTagMaster(){
-	sh "git fetch origin main && git checkout -f main && git tag -a ${env.NEXT_TAG} && git push --tags"
+	sh "git fetch origin main && git checkout main && git tag -a ${env.NEXT_TAG} && git push --tags"
 }
 
 return this;
