@@ -33,12 +33,10 @@ def isCIorCD(){
 
 def upTagVersion(String tag){
 
-	echo "Paso por aqui ${tag}"
-
 	def splitTag = tag.split(".")
-
-	splitTag[1] = (splitTag[1].toInteger() + 1) as String
-
+	int minor = splitTag[1].toInteger()
+	minor++
+	splitTag[1] = minor
 	return splitTag.join(".")
 }
 
