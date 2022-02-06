@@ -115,7 +115,7 @@ def gitTagMaster(){
 }
 
 def gitDiff(){
-	sh 'git diff "${env.GIT_COMMIT}" main'
+	sh "git diff ${env.GIT_COMMIT} main"
 }
 
 return this;
