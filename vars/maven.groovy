@@ -119,7 +119,7 @@ def gitDiff(){
 	sh "cd /tmp/${env.BUILD_TAG}"
 	sh "git clone --single-branch ${env.GIT_URL}"
 	sh "git diff ${env.GIT_COMMIT} main"
-	rm -rf /tmp/
+	sh "rm -rf /tmp/"
 }
 
 return this;
