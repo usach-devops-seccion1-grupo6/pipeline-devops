@@ -115,8 +115,9 @@ def gitTagMaster(){
 }
 
 def gitDiff(){
-	sh "%TEMP%"
-	sh "git clone ${env.GIT_URL}"
+	sh "mkdir /tmp/${new_dir}"
+	sh "cd /tmp/${new_dir}"
+	sh "git clone --single-branch ${env.GIT_URL}"
 	def main_hash = sh "git rev-parse HEAD"
 	sh "git diff ${env.GIT_COMMIT} ${main_hash}"
 }
