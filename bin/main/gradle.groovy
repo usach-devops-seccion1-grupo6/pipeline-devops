@@ -4,7 +4,7 @@ import pipeline.*
 def call(String chosenStages){
 
 	def utils  = new test.UtilMethods()
-	sh 'git switch realise-v1-1-0'
+	sh 'git switch release-v1-1-0'
 	sh 'git pull all'
     def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
 	env.CURR_TAG = "${tags}"
