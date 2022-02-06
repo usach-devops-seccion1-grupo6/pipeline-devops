@@ -1,5 +1,6 @@
 def call(){
-
+    def tag = sh(returnStdout: true, script: "git tag --sort version:refname | tail -1").trim()
+    sh "$tag"
     pipeline {
         agent any
 
@@ -12,12 +13,12 @@ def call(){
             choice(name: 'buildtool', choices: ['maven','gradle'], description: 'Elección de herramienta de construcción para aplicación covid')
             string(name: 'stages', defaultValue: '' , description: 'Escribir stages a ejecutar en formato: stage1;stage2;stage3. Si stage es vacío, se ejecutarán todos los stages.')
         }
-
+        
         stages {
             stage('Pipeline') {
                 steps {
                     script{
-
+                        
                         sh 'env'
                         env.TAREA = ""
 
