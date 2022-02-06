@@ -33,7 +33,7 @@ def call(String chosenStages){
 	}
 }
 
-def buildAndTest(){
+def compile(){
 	sh "gradle clean build"
 	sh "mv build/libs/DevOpsUsach2020-0.0.1.jar build/libs/DevOpsUsach2020-${env.NEXT_TAG}.jar"
 }
