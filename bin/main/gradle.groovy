@@ -16,7 +16,8 @@ def call(String chosenStages){
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
-
+	env.TMP_FOLDER = "/tmp/ms-iclab"
+	utils.clone("${env.TMP_FOLDER}")
 	stages.each{
 		stage(it){
 			env.TAREA = "${it}"
@@ -107,7 +108,8 @@ def gitCreateRelease(){
 }
 
 def gitMergeMaster(){
-	sh 'git switch main'
+	sh "cd ${env.TMP_FOLDER}"
+	sh "git switch main && git pull"
 	sh "git merge --no-ff release-${env.NEXT_TAG} && git push"
 }
 
