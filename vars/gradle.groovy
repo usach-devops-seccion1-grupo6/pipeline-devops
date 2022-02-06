@@ -4,7 +4,7 @@ def call(String chosenStages){
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-	def pipelineStages = (pipelineType == 'IC') ? ['buildAndTest','sonar','runJar','rest','nexusCI','gitCreateRelease'] : ['downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
+	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','rest','nexusUpload','gitCreateRelease'] : ['gitDiff', 'downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
@@ -23,8 +23,16 @@ def call(String chosenStages){
 	}
 }
 
-def buildAndTest(){
+def compile(){
 	sh 'gradle clean build'
+}
+
+def unitTest(){
+	sh 'gradle test'
+}
+
+def jar(){
+	sh 'gradle jar'
 }
 
 def sonar(){
@@ -42,7 +50,7 @@ def rest(){
 	sh "curl -X GET http://localhost:8082/rest/mscovid/test?msg=testing"
 }
 
-def nexusCI(){
+def nexusUpload(){
 	nexusPublisher nexusInstanceId: 'nexus',
 	nexusRepositoryId: 'devops-usach-nexus',
 	packages: [

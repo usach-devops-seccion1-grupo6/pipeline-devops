@@ -4,7 +4,7 @@ def call(String chosenStages){
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-    def pipelineStages = (pipelineType == 'IC') ? ['compile','test','jar','sonar','runJar','rest','nexusCI'] : ['downloadNexus','runDownloadedJar','rest','nexusCD']
+    def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','rest','nexusUpload'] : ['downloadNexus','runDownloadedJar','rest','nexusCD', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
     def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
     env.PIPELINE_TYPE = "${pipelineType}"
@@ -27,7 +27,7 @@ def compile(){
     sh 'mvn clean compile -e'
 }
 
-def test(){
+def unitTest(){
     sh 'mvn clean test -e'
 }
 
@@ -50,7 +50,7 @@ def rest(){
     sh "curl -X GET http://localhost:8082/rest/mscovid/test?msg=testing"
 }
 
-def nexusCI(){
+def nexusUpload(){
 	nexusPublisher nexusInstanceId: 'nexus',
 	nexusRepositoryId: 'devops-usach-nexus',
 	packages: [
@@ -99,6 +99,21 @@ def nexusCD(){
 			]
 		]
 	]
+}
+
+def gitCreateRelease(){
+}
+
+def gitMergeMaster(){
+}
+
+def gitMergeDevelop(){
+}
+
+def gitTagMaster(){
+}
+
+def gitDiff(){
 }
 
 return this;
