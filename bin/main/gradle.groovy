@@ -10,7 +10,6 @@ def call(String chosenStages){
 	tags = utils.upTagVersion("${tags}")
 	env.NEXT_TAG = "${tags}"
 	echo "Git new tags: ${env.NEXT_TAG}"
-	
 	def pipelineStages = (pipelineType == 'IC') ? ['buildAndTest','sonar','runJar','rest','nexusCI','gitCreateRelease'] : ['downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
@@ -57,14 +56,14 @@ def nexusCI(){
 			mavenAssetList: [
 				[classifier: '',
 				extension: 'jar',
-				filePath: 'build/libs/DevOpsUsach2020-0.0.1.jar'
+				filePath: 'build/libs/DevOpsUsach2020-${env.NEXT_TAG}.jar'
 			]
 		],
 			mavenCoordinate: [
 				artifactId: 'DevOpsUsach2020',
 				groupId: 'com.devopsusach2020',
 				packaging: 'jar',
-				version: "0.0.1-${env.GIT_BRANCH}"
+				version: "${env.NEXT_TAG}-${env.GIT_BRANCH}"
 			]
 		]
 	]
@@ -87,33 +86,33 @@ def nexusCD(){
 			mavenAssetList: [
 				[classifier: '',
 				extension: 'jar',
-				filePath: 'DevOpsUsach2020-0.0.1-develop.jar'
+				filePath: 'DevOpsUsach2020-${env.NEXT_TAG}-develop.jar'
 			]
 		],
 			mavenCoordinate: [
 				artifactId: 'DevOpsUsach2020',
 				groupId: 'com.devopsusach2020',
 				packaging: 'jar',
-				version: "1.0.0"
+				version: "${env.NEXT_TAG}"
 			]
 		]
 	]
 }
 
 def gitCreateRelease(){
-	sh 'git fetch -p &&	git checkout develop && git pull && git checkout -b release-v1.0.0 && git push origin release-v1.0.0'
+	sh 'git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}'
 }
 
 def gitMergeMaster(){
-	sh 'git switch main && git merge --no-ff release-v1.0.0'
+	sh 'git switch main && git merge --no-ff release-${env.NEXT_TAG}'
 }
 
 def gitMergeDevelop(){
-	sh 'git switch develop && git merge --no-ff release-v1.0.0'
+	sh 'git switch develop && git merge --no-ff release-${env.NEXT_TAG}'
 }
 
 def gitTagMaster(){
-	sh 'git switch main && git tag -a v1.0.0'
+	sh 'git switch main && git tag -a ${env.NEXT_TAG}'
 }
 
 return this;
