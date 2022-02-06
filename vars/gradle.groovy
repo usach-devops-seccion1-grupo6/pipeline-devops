@@ -108,9 +108,7 @@ def gitCreateRelease(){
 }
 
 def gitMergeMaster(){
-	sh "cd ${env.TMP_FOLDER}"
-	sh "git switch main && git pull"
-	sh "git merge --no-ff release-${env.NEXT_TAG} && git push"
+	sh "cd ${env.TMP_FOLDER} && git switch main && git pull && git merge --no-ff release-${env.NEXT_TAG} && git push"
 }
 
 def gitMergeDevelop(){
