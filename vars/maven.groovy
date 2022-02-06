@@ -37,7 +37,7 @@ def jar(){
 
 def md5Jar(){
 	def md5Old = sh(script: "md5sum build/DevOpsUsach2020-0.0.1.jar |awk '{print \$1}'", returnStdout: true).trim()
-	def md5New = sh(script: "md5sum DevOpsUsach2020-0.0.1.jar |awk '{print \$1}'", returnStdout: true).trim()
+	def md5New = sh(script: "md5sum DevOpsUsach2020-0.0.1-develop.jar |awk '{print \$1}'", returnStdout: true).trim()
     sh "test \"${md5Old}\" = \"${md5New}\""
 }
 
