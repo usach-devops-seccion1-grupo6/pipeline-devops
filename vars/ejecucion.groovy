@@ -1,3 +1,5 @@
+import pipeline.*
+
 def call(){
     def utils  = new test.UtilMethods()
     def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
