@@ -115,8 +115,6 @@ def gitTagMaster(){
 }
 
 def gitDiff(){
-	sh "rm -rf /tmp/new_dir"
-	sh "rm -rf /tmp/${env.BUILD_TAG}"
 	sh "mkdir /tmp/${env.BUILD_TAG}"
 	sh "cd /tmp/${env.BUILD_TAG}"
 	sh "git clone --single-branch ${env.GIT_URL}"
