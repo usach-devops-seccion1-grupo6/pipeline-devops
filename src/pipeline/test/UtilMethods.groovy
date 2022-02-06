@@ -32,12 +32,12 @@ def isCIorCD(){
 }
 
 def upTagVersion(String tag){
-	echo "Git tag dentro: ${tag}"
-	tag.split('.').each{
-		echo "${it}"
-	}
-	
-	return ""
+	String[] splitTag = tag.split('\\.')
+	echo "primero ${splitTag[1]}"
+	int minor = splitTag[1].toInteger()
+	minor++
+	splitTag[1] = minor
+	return splitTag.join('.')
 }
 
 return this;
