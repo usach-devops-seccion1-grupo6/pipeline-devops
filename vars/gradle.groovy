@@ -4,7 +4,7 @@ def call(String chosenStages){
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','rest','nexusUpload','gitCreateRelease'] : ['gitDiff', 'downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
+	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload','gitCreateRelease'] : ['gitDiff', 'nexusDownload','run','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
@@ -47,7 +47,7 @@ def runJar(){
 	sleep 20
 }
 
-def rest(){
+def test(){
 	sh "curl -X GET http://localhost:8082/rest/mscovid/test?msg=testing"
 }
 
@@ -72,11 +72,11 @@ def nexusUpload(){
 	]
 }
 
-def downloadNexus(){
+def nexusDownload(){
 	sh 'curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD "http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/0.0.1-develop/DevOpsUsach2020-0.0.1-develop.jar" -O'
 }
 
-def runDownloadedJar(){
+def run(){
 	sh 'timeout 30 $(which nohup) java -jar DevOpsUsach2020-0.0.1-develop.jar 2>/dev/null>&1 &'
     sleep 20
 }
