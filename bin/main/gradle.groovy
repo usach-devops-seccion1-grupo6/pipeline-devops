@@ -5,12 +5,6 @@ def call(String chosenStages){
 
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
-	def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
-	env.CURR_TAG = "${tags}"
-	echo "Git current tags: ${env.CURR_TAG}"
-	tags = utils.upTagVersion("${tags}")
-	env.NEXT_TAG = "${tags}"
-	echo "Git new tags: ${env.NEXT_TAG}"
 	def pipelineStages = (pipelineType == 'IC') ? ['buildAndTest','sonar','runJar','rest','nexusCI','gitCreateRelease'] : ['downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
@@ -31,8 +25,7 @@ def call(String chosenStages){
 }
 
 def buildAndTest(){
-	echo "${env.CURR_TAG}"
-	sh 'gradle clean build'
+	sh "gradle clean build -Pversion=${env.NEXT_TAG}"
 }
 
 def sonar(){
@@ -58,7 +51,7 @@ def nexusCI(){
 			mavenAssetList: [
 				[classifier: '',
 				extension: 'jar',
-				filePath: 'build/libs/DevOpsUsach2020-"${env.CURR_TAG}".jar'
+				filePath: "build/libs/DevOpsUsach2020-${env.NEXT_TAG}.jar"
 			]
 		],
 			mavenCoordinate: [
@@ -76,7 +69,7 @@ def downloadNexus(){
 }
 
 def runDownloadedJar(){
-	sh 'timeout 30 $(which nohup) java -jar DevOpsUsach2020-0.0.1-develop.jar 2>/dev/null>&1 &'
+	sh "timeout 30 $(which nohup) java -jar DevOpsUsach2020-${env.NEXT_TAG}-develop.jar 2>/dev/null>&1 &"
     sleep 20
 }
 

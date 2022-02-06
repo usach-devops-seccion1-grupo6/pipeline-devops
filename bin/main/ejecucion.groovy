@@ -22,7 +22,12 @@ def call(){
                         env.TAREA = ""
                         env.CURR_TAG = "" 
                         env.NEXT_TAG = ""
-
+                        def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
+                        env.CURR_TAG = "${tags}"
+                        echo "Git current tags: ${env.CURR_TAG}"
+                        tags = utils.upTagVersion("${tags}")
+                        env.NEXT_TAG = "${tags}"
+                        echo "Git new tags: ${env.NEXT_TAG}"
                         def parsed = "${env.JOB_NAME}".tokenize('/')
                         env.JOB_MULTI = "${parsed[0]}"
                         env.RAMA = "${parsed[1]}"
