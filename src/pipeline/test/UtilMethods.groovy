@@ -32,6 +32,11 @@ def isCIorCD(){
 }
 
 def upTagVersion(String tag){
+
+	if(!tag?.trim()){
+		return ""
+	}
+
 	def splitTag = tag.split(".")
 
 	splitTag[1] = (splitTag[1].toInteger() + 1) as String
