@@ -107,15 +107,15 @@ def gitCreateRelease(){
 }
 
 def gitMergeMaster(){
-	sh "git switch main && git merge --no-ff release-${env.NEXT_TAG}"
+	sh "git checkout main && git merge --no-ff release-${env.NEXT_TAG} && git push"
 }
 
 def gitMergeDevelop(){
-	sh "git switch develop && git merge --no-ff release-${env.NEXT_TAG}"
+	sh "git checkout develop && git merge --no-ff release-${env.NEXT_TAG} && git push"
 }
 
 def gitTagMaster(){
-	sh "git switch main && git tag -a ${env.NEXT_TAG}"
+	sh "git checkout main && git tag -a ${env.NEXT_TAG} && git push --tags"
 }
 
 return this;
