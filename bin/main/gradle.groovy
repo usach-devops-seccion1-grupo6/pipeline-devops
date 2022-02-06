@@ -6,6 +6,7 @@ def call(String chosenStages){
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 	def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
+	env.CURR_TAG = "${tags}"
 	echo "Git current tags: ${tags}"
 	tags = utils.upTagVersion("${tags}")
 	env.NEXT_TAG = "${tags}"

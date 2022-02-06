@@ -20,6 +20,8 @@ def call(){
                         
                         sh 'env'
                         env.TAREA = ""
+                        env.CURR_TAG = "" 
+                        env.NEXT_TAG = ""
 
                         def parsed = "${env.JOB_NAME}".tokenize('/')
                         env.JOB_MULTI = "${parsed[0]}"
