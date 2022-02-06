@@ -108,15 +108,15 @@ def gitCreateRelease(){
 }
 
 def gitMergeMaster(){
-	sh "cd ${env.TMP_FOLDER} && git switch main && git pull && git merge --no-ff origin/release-${env.NEXT_TAG} && git push"
+	sh "cd ${env.TMP_FOLDER} && git switch main && git pull && git merge -m 'merge to master' --no-ff origin/release-${env.NEXT_TAG} && git push"
 }
 
 def gitMergeDevelop(){
-	sh "cd ${env.TMP_FOLDER} && git fetch origin develop && git checkout develop && git merge --no-ff origin/release-${env.NEXT_TAG} && git push"
+	sh "cd ${env.TMP_FOLDER} && git fetch origin develop && git checkout develop && git merge -m 'merge to develop' --no-ff origin/release-${env.NEXT_TAG} && git push"
 }
 
 def gitTagMaster(){
-	sh "cd ${env.TMP_FOLDER} && git fetch origin main && git checkout main && git tag -a ${env.NEXT_TAG} && git push --tags"
+	sh "cd ${env.TMP_FOLDER} && git fetch origin main && git checkout main && git tag -m 'create tag' -a ${env.NEXT_TAG} && git push --tags"
 }
 
 return this;
