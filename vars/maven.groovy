@@ -115,7 +115,10 @@ def gitTagMaster(){
 }
 
 def gitDiff(){
-	sh "git diff ${env.GIT_COMMIT} main"
+	sh "%TEMP%"
+	sh "git clone ${env.GIT_URL}"
+	def main_hash = sh "git rev-parse HEAD"
+	sh "git diff ${env.GIT_COMMIT} ${main_hash}"
 }
 
 return this;
