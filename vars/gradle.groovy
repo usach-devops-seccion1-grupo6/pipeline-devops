@@ -102,19 +102,19 @@ def nexusCD(){
 }
 
 def gitCreateRelease(){
-	sh 'git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}'
+	sh "git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}"
 }
 
 def gitMergeMaster(){
-	sh 'git switch main && git merge --no-ff release-${env.NEXT_TAG}'
+	sh "git switch main && git merge --no-ff release-${env.NEXT_TAG}"
 }
 
 def gitMergeDevelop(){
-	sh 'git switch develop && git merge --no-ff release-${env.NEXT_TAG}'
+	sh "git switch develop && git merge --no-ff release-${env.NEXT_TAG}"
 }
 
 def gitTagMaster(){
-	sh 'git switch main && git tag -a ${env.NEXT_TAG}'
+	sh "git switch main && git tag -a ${env.NEXT_TAG}"
 }
 
 return this;
