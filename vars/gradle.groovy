@@ -116,7 +116,7 @@ def gitMergeDevelop(){
 }
 
 def gitTagMaster(){
-	sh "cd ${env.TMP_FOLDER} && git fetch origin main && git checkout main && git tag -m 'create tag' -a ${env.NEXT_TAG} && git push --tags"
+	sh "cd ${env.TMP_FOLDER} && git fetch origin main && git checkout main && git tag -m 'create tag' -a ${env.NEXT_TAG} && git push --tags && git branch -d release-${env.NEXT_TAG} && git push -d origin release-${env.NEXT_TAG}"
 }
 
 return this;
