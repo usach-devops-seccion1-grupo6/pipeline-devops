@@ -33,9 +33,7 @@ def isCIorCD(){
 
 def upTagVersion(String tag){
 
-	if(!tag?.trim()){
-		return ""
-	}
+	echo "Paso por aqui ${tag}"
 
 	def splitTag = tag.split(".")
 
