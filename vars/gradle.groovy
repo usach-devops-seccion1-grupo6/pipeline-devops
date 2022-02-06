@@ -4,7 +4,7 @@ def call(String chosenStages){
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload','gitCreateRelease'] : ['gitDiff', 'nexusDownload','run','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
+	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload', 'nexusDownload', 'md5Jar', 'gitCreateRelease'] : ['gitDiff', 'nexusDownload','run','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
@@ -79,27 +79,6 @@ def nexusDownload(){
 def run(){
 	sh 'timeout 30 $(which nohup) java -jar DevOpsUsach2020-0.0.1-develop.jar 2>/dev/null>&1 &'
     sleep 20
-}
-
-def nexusCD(){
-	nexusPublisher nexusInstanceId: 'nexus',
-	nexusRepositoryId: 'devops-usach-nexus',
-	packages: [
-		[$class: 'MavenPackage',
-			mavenAssetList: [
-				[classifier: '',
-				extension: 'jar',
-				filePath: 'DevOpsUsach2020-0.0.1-develop.jar'
-			]
-		],
-			mavenCoordinate: [
-				artifactId: 'DevOpsUsach2020',
-				groupId: 'com.devopsusach2020',
-				packaging: 'jar',
-				version: "1.0.0"
-			]
-		]
-	]
 }
 
 def gitCreateRelease(){
