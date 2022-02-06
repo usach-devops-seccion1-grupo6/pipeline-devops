@@ -118,4 +118,8 @@ def gitTagMaster(){
 	sh 'git switch main && git tag -a v1.0.0'
 }
 
+def gitDiff(){
+	sh 'git diff ${env.COMMIT_ID} main'
+}
+
 return this;
