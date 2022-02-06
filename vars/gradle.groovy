@@ -109,4 +109,7 @@ def gitTagMaster(){
 	sh 'git switch main && git tag -a v1.0.0'
 }
 
+def gitDiff(){
+	sh 'git diff release-v1.0.0 main'
+}
 return this;
