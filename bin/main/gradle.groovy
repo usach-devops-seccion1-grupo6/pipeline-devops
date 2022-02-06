@@ -5,8 +5,9 @@ def call(String chosenStages){
 	def utils  = new test.UtilMethods()
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 	def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true)
-	echo "Git new tags: ${tags}"
+	echo "Git current tags: ${tags}"
 	tags = utils.upTagVersion("${tags}")
+	echo "Git new tags: ${tags}"
 	def pipelineStages = (pipelineType == 'IC') ? ['buildAndTest','sonar','runJar','rest','nexusCI','gitCreateRelease'] : ['downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
