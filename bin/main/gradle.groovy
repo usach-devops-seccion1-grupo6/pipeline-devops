@@ -89,7 +89,7 @@ def nexusCD(){
 			mavenAssetList: [
 				[classifier: '',
 				extension: 'jar',
-				filePath: 'DevOpsUsach2020-${env.NEXT_TAG}-develop.jar'
+				filePath: "DevOpsUsach2020-${env.NEXT_TAG}-develop.jar"
 			]
 		],
 			mavenCoordinate: [
