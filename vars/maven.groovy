@@ -24,21 +24,21 @@ def call(String chosenStages){
 }
 
 def compile(){
-    sh 'mvn clean compile -e'
+    sh 'mvn -Dmaven.test.skip=true clean compile -e'
 }
 
 def unitTest(){
-    sh 'mvn clean test -e'
+    sh 'mvn test -e'
 }
 
 def jar(){
-    sh 'mvn clean package -e'
+    sh 'mvn -Dmaven.test.skip=true package -e'
 }
 
 def sonar(){
     withSonarQubeEnv(installationName: 'sonarqube') {
 		def sonar_id = "${env.JOB_MULTI}-${env.RAMA}-${env.BUILD_ID}"
-        sh "mvn clean verify sonar:sonar -Dsonar.projectKey=${sonar_id} -Dsonar.projectName=${sonar_id}"
+        sh "mvn verify sonar:sonar -Dmaven.test.skip=true -Dsonar.projectKey=${sonar_id} -Dsonar.projectName=${sonar_id}"
     }
 }
 
