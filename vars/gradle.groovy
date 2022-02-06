@@ -112,11 +112,11 @@ def gitMergeMaster(){
 }
 
 def gitMergeDevelop(){
-	sh "git fetch origin develop && git checkout develop && git merge --no-ff release-${env.NEXT_TAG} && git push"
+	sh "cd ${env.TMP_FOLDER} && git fetch origin develop && git checkout develop && git merge --no-ff origin/release-${env.NEXT_TAG} && git push"
 }
 
 def gitTagMaster(){
-	sh "git fetch origin main && git checkout main && git tag -a ${env.NEXT_TAG} && git push --tags"
+	sh "cd ${env.TMP_FOLDER} && git fetch origin main && git checkout main && git tag -a ${env.NEXT_TAG} && git push --tags"
 }
 
 return this;
