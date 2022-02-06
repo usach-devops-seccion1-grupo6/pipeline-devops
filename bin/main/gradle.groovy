@@ -4,14 +4,13 @@ import pipeline.*
 def call(String chosenStages){
 
 	def utils  = new test.UtilMethods()
-	sh "git pull --all"
     def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
 	env.CURR_TAG = "${tags}"
     echo "Git current tags: ${env.CURR_TAG}"
 	tags = utils.upTagVersion("${tags}")
 	env.NEXT_TAG = "${tags}"
 	echo "Git new tags: ${env.NEXT_TAG}"
-	sh "git checkout release-${env.NEXT_TAG}"
+	sh "git checkout release-${env.NEXT_TAG} && git pull --all"
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 	def pipelineStages = (pipelineType == 'IC') ? ['buildAndTest','sonar','runJar','rest','nexusCI','gitCreateRelease'] : ['downloadNexus','runDownloadedJar','rest','nexusCD','gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
