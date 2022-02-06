@@ -32,10 +32,10 @@ def isCIorCD(){
 }
 
 def upTagVersion(String tag){
-	String[] splitTag = tag.split('\\.')
+	String[] splitTag = tag.split('\\-')
 	int minor = splitTag[1].toInteger()
 	splitTag[1] = (++minor) as String
-	return splitTag.join('.')
+	return splitTag.join('-')
 }
 
 return this;

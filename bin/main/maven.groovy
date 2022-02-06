@@ -2,6 +2,12 @@ import pipeline.*
 
 def call(String chosenStages){
 	def utils  = new test.UtilMethods()
+	def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
+	env.CURR_TAG = "${tags}"
+    echo "Git current tags: ${env.CURR_TAG}"
+	tags = utils.upTagVersion("${tags}")
+	env.NEXT_TAG = "${tags}"
+	echo "Git new tags: ${env.NEXT_TAG}"
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
     def pipelineStages = (pipelineType == 'IC') ? ['compile','test','jar','sonar','runJar','rest','nexusCI'] : ['downloadNexus','runDownloadedJar','rest','nexusCD']
