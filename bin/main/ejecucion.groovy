@@ -40,10 +40,10 @@ def call(){
 
 				post{
 					success{
-						slackSend color: 'good', message: "[Grupo6] [Pipeline ${env.PIPELINE_TYPE}][Rama: ${env.RAMA}][Stage: ${env.TAREA}][${env.BUILD_DISPLAY_NAME}][${params.buildtool}][Resultado: OK]"
+						slackSend color: 'good', message: "[Grupo6] [Pipeline ${env.PIPELINE_TYPE}][Rama: ${env.RAMA}][Stage: ${env.TAREA}][${env.BUILD_DISPLAY_NAME}][${params.buildtool}][Resultado: OK]", channel: "lab-pipeline-mod3-seccion1-status"
 					}
 					failure{
-						slackSend color: 'danger', message: "[Grupo6] [Pipeline ${env.PIPELINE_TYPE}][Rama: ${env.RAMA}][Stage: ${env.TAREA}][${env.BUILD_DISPLAY_NAME}][${params.buildtool}][Resultado: No OK]"
+						slackSend color: 'danger', message: "[Grupo6] [Pipeline ${env.PIPELINE_TYPE}][Rama: ${env.RAMA}][Stage: ${env.TAREA}][${env.BUILD_DISPLAY_NAME}][${params.buildtool}][Resultado: No OK]", channel: "test6"
 					}
 			 	}
             }
