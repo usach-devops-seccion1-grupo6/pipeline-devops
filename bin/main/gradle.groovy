@@ -4,6 +4,7 @@ import pipeline.*
 def call(String chosenStages){
 
 	def utils  = new test.UtilMethods()
+	sh 'git pull --ff-only'
 	sh 'git pull --all'
     def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
 	env.CURR_TAG = "${tags}"
