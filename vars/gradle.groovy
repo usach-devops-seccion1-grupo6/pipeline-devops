@@ -94,12 +94,7 @@ def nexusCD(){
 }
 
 def gitCreateRelease(){
-	sh '
-		git fetch -p 
-		git checkout develop; git pull
-		git checkout -b release-v1.0.0
-		git push origin release-v1.0.0
-	'
+	sh 'git fetch -p &&	git checkout develop && git pull && git checkout -b release-v1.0.0 && git push origin release-v1.0.0'
 }
 
 def gitMergeMaster(){
