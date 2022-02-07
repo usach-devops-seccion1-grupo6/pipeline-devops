@@ -17,7 +17,7 @@ def call(String chosenStages){
 
 	env.PIPELINE_TYPE = "${pipelineType}"
 	env.TMP_FOLDER = "/tmp/${env.RAMA}"
-	utils.clone("${env.TMP_FOLDER}")
+	utils.clone("${env.TMP_FOLDER}", "${env.GIT_URL}")
 	stages.each{
 		stage(it){
 			env.TAREA = "${it}"
