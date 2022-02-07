@@ -13,7 +13,7 @@ def call(String chosenStages){
 	echo "Git new tags: ${env.NEXT_TAG}"
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload', 'nexusDownload', 'md5Jar', 'gitCreateRelease'] : ['gitDiff', 'nexusDownload','runDownloadedJar','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
+	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload', 'gitCreateRelease'] : ['gitDiff', 'nexusDownload','runDownloadedJar','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
@@ -94,7 +94,7 @@ def nexusDownload(){
 }
 
 def runDownloadedJar(){
-	sh "timeout 30 \$(which nohup) java -jar DevOpsUsach2020-${env.NEXT_TAG}-${env.GIT_BRANCH}.jar 2>/dev/null>&1 &"
+	sh "timeout 30 \$(which nohup) java -jar DevOpsUsach2020-${env.NEXT_TAG}-develop.jar 2>/dev/null>&1 &"
     sleep 20
 }
 
