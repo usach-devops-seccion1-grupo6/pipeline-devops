@@ -96,11 +96,16 @@ def runDownloadedJar(){
     sleep 20
 }
 
-
 def gitCreateRelease(){
 	if("${env.BRANCH_NAME}" == "develop"){
 		sh "git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}"
 	}
+}
+
+def gitDiff(){
+	sh "mkdir /tmp/${env.BUILD_TAG}"
+	sh "cd /tmp/${env.BUILD_TAG} && git clone --single-branch ${env.GIT_URL} . && git diff ${env.GIT_COMMIT} main"
+	sh "rm -rf /tmp/${env.BUILD_TAG}"
 }
 
 def gitMergeMaster(){

@@ -104,6 +104,12 @@ def gitCreateRelease(){
 	}
 }
 
+def gitDiff(){
+	sh "mkdir /tmp/${env.BUILD_TAG}"
+	sh "cd /tmp/${env.BUILD_TAG} && git clone --single-branch ${env.GIT_URL} . && git diff ${env.GIT_COMMIT} main"
+	sh "rm -rf /tmp/${env.BUILD_TAG}"
+}
+
 def gitMergeMaster(){
 	sh "cd ${env.TMP_FOLDER} && git switch main && git pull && git merge -m 'merge to master' --no-ff origin/release-${env.NEXT_TAG} && git push"
 }
