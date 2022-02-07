@@ -40,7 +40,7 @@ def upTagVersion(String tag){
 
 def clone(folderTmp, urlRepo){
 	sh "rm -rf ${folderTmp} && mkdir ${folderTmp}"
-	sh "git clone ${urlRepo} ${folderTmp}"
+	sh "git clone ${urlRepo} ${folderTmp} && git pull --all --tags"
 }
 
 return this;
