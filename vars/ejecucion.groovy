@@ -27,7 +27,6 @@ def call(){
                         env.JOB_MULTI = "${parsed[0]}"
                         env.RAMA = "${parsed[1]}"
 
-                        params.buildtool = 'gradle'
                         figlet params.buildtool
                         def archivo = (params.buildtool == 'gradle') ? 'build.gradle' : 'pom.xml'
 
