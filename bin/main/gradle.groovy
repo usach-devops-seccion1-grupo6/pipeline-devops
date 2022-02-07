@@ -4,7 +4,7 @@ import pipeline.*
 def call(String chosenStages){
 
 	def utils  = new test.UtilMethods()
-	sh "git pull --all"
+	sh "git fetch --all --tags"
     def tags = sh(script: "git tag --sort version:refname | tail -1", returnStdout: true).trim()
 	env.CURR_TAG = "${tags}"
     echo "Git current tags: ${env.CURR_TAG}"
@@ -117,7 +117,7 @@ def gitMergeDevelop(){
 }
 
 def gitTagMaster(){
-	sh "cd ${env.TMP_FOLDER} && git fetch origin main && git checkout main && git tag -m 'create tag' -a ${env.NEXT_TAG} && git push --tags && git branch -d release-${env.NEXT_TAG} && git push -d origin release-${env.NEXT_TAG}"
+	sh "cd ${env.TMP_FOLDER} && git fetch origin main && git checkout main && git tag -m 'create tag' -a ${env.NEXT_TAG} && git push --tags && git switch release-${env.NEXT_TAG} && git switch main && git branch -d release-${env.NEXT_TAG} && git push -d origin release-${env.NEXT_TAG}"
 }
 
 return this;
