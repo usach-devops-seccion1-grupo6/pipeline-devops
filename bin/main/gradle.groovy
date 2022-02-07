@@ -13,12 +13,12 @@ def call(String chosenStages){
 	echo "Git new tags: ${env.NEXT_TAG}"
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload', 'nexusDownload', 'md5Jar', 'gitCreateRelease'] : ['gitDiff', 'nexusDownload','runJarDownload','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
+	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload', 'nexusDownload', 'md5Jar', 'gitCreateRelease'] : ['gitDiff', 'nexusDownload','runDownloadedJar','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
 	env.TMP_FOLDER = "/tmp/${env.RAMA}"
-	utils.clone("${env.TMP_FOLDER}")
+	utils.clone("${env.TMP_FOLDER}", "${env.GIT_URL}")
 	stages.each{
 		stage(it){
 			env.TAREA = "${it}"
@@ -102,6 +102,10 @@ def gitCreateRelease(){
 	if("${env.BRANCH_NAME}" == "develop"){
 		sh "git fetch -p &&	git checkout develop && git pull && git checkout -b release-${env.NEXT_TAG} && git push origin release-${env.NEXT_TAG}"
 	}
+}
+
+def gitDiff(){
+	sh "cd ${env.TMP_FOLDER} && git switch main && git diff main ${env.GIT_COMMIT}"
 }
 
 def gitMergeMaster(){

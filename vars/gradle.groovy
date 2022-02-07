@@ -105,8 +105,7 @@ def gitCreateRelease(){
 }
 
 def gitDiff(){
-	sh "cd ${env.TMP_FOLDER} && git diff ${env.GIT_COMMIT} main"
-	sh "rm -rf /tmp/${env.BUILD_TAG}"
+	sh "cd ${env.TMP_FOLDER} && git switch main && git diff main ${env.GIT_COMMIT}"
 }
 
 def gitMergeMaster(){
