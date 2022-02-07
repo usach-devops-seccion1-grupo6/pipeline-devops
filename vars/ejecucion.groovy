@@ -9,7 +9,7 @@ def call(){
 		}
 
         parameters {
-            choice(name: 'buildtool', choices: ['maven','gradle'], description: 'Elección de herramienta de construcción para aplicación covid')
+            choice(name: 'buildtool', choices: ['gradle', 'maven'], description: 'Elección de herramienta de construcción para aplicación covid')
             string(name: 'stages', defaultValue: '' , description: 'Escribir stages a ejecutar en formato: stage1;stage2;stage3. Si stage es vacío, se ejecutarán todos los stages.')
         }
         
@@ -40,7 +40,7 @@ def call(){
 
 				post{
 					success{
-						slackSend color: 'good', message: "[Grupo6] [Pipeline ${env.PIPELINE_TYPE}][Rama: ${env.RAMA}][Stage: ${env.TAREA}][${env.BUILD_DISPLAY_NAME}][${params.buildtool}][Resultado: OK]", channel: "lab-pipeline-mod3-seccion1-status"
+						slackSend color: 'good', message: "[Grupo6] [Pipeline ${env.PIPELINE_TYPE}][Rama: ${env.RAMA}][Stage: ${env.TAREA}][${env.BUILD_DISPLAY_NAME}][${params.buildtool}][Resultado: OK]", channel: "test6"
 					}
 					failure{
 						slackSend color: 'danger', message: "[Grupo6] [Pipeline ${env.PIPELINE_TYPE}][Rama: ${env.RAMA}][Stage: ${env.TAREA}][${env.BUILD_DISPLAY_NAME}][${params.buildtool}][Resultado: No OK]", channel: "test6"
