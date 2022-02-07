@@ -88,7 +88,7 @@ def nexusUpload(){
 }
 
 def nexusDownload(){
-	sh "curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD 'http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/${env.NEXT_TAG}-${env.GIT_BRANCH}/DevOpsUsach2020-${env.NEXT_TAG}-${env.GIT_BRANCH}.jar' -O"
+	sh "curl -X GET -u $NEXUS_USER:$NEXUS_PASSWORD 'http://nexus:8081/repository/devops-usach-nexus/com/devopsusach2020/DevOpsUsach2020/${env.NEXT_TAG}-develop/DevOpsUsach2020-${env.NEXT_TAG}-develop.jar' -O"
 }
 
 def runDownloadedJar(){
