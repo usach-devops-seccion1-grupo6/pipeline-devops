@@ -12,7 +12,7 @@ def call(String chosenStages){
 	echo "Git new tags: ${env.NEXT_TAG}"
 	def pipelineType = (utils.isCIorCD().contains('ci')) ? 'IC' : 'Release'
 
-	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload', 'nexusDownload', 'md5Jar', 'gitCreateRelease'] : ['gitDiff', 'nexusDownload','runJarDownload','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
+	def pipelineStages = (pipelineType == 'IC') ? ['compile', 'unitTest', 'jar', 'sonar','runJar','test','nexusUpload', 'nexusDownload', 'md5Jar', 'gitCreateRelease'] : ['gitDiff', 'nexusDownload','runDownloadedJar','test', 'gitMergeMaster','gitMergeDevelop','gitTagMaster']
 	def stages = utils.getValidatedStages(chosenStages, pipelineStages)
 
 	env.PIPELINE_TYPE = "${pipelineType}"
