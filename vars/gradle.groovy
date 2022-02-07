@@ -105,8 +105,7 @@ def gitCreateRelease(){
 }
 
 def gitDiff(){
-	sh "mkdir /tmp/${env.BUILD_TAG}"
-	sh "cd /tmp/${env.BUILD_TAG} && git clone --single-branch ${env.GIT_URL} . && git diff ${env.GIT_COMMIT} main"
+	sh "cd ${env.TMP_FOLDER} && git diff ${env.GIT_COMMIT} main"
 	sh "rm -rf /tmp/${env.BUILD_TAG}"
 }
 
