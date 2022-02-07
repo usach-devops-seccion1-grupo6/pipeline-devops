@@ -38,9 +38,9 @@ def upTagVersion(String tag){
 	return splitTag.join('-')
 }
 
-def clone(folderTmp){
-	sh "rm -rf ${folderTmp} && mkdir ${folderTmp} 2& > /dev/null"
-	sh "git clone git@github.com:usach-devops-seccion1-grupo6/ms-iclab.git ${folderTmp} & > /dev/null"
+def clone(folderTmp, urlRepo){
+	sh "rm -rf ${folderTmp} && mkdir ${folderTmp}"
+	sh "git clone ${urlRepo} ${folderTmp}"
 }
 
 return this;
