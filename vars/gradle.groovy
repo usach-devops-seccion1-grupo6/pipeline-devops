@@ -94,7 +94,7 @@ def nexusDownload(){
 }
 
 def runDownloadedJar(){
-	sh "timeout 30 \$(which nohup) java -jar DevOpsUsach2020-${env.NEXT_TAG}-${env.GIT_BRANCH}.jar 2>/dev/null>&1 &"
+	sh "timeout 30 \$(which nohup) java -jar DevOpsUsach2020-${env.NEXT_TAG}-develop.jar 2>/dev/null>&1 &"
     sleep 20
 }
 
